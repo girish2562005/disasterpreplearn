@@ -22,6 +22,13 @@ const translations = {
     'nav.profile': 'Profile',
     'nav.students': 'My Students',
     'nav.reports': 'Progress Reports',
+    'nav.content': 'Course Content',
+    'nav.assignments': 'Assignments',
+    'nav.settings': 'Settings',
+    'nav.analytics': 'Analytics',
+    'nav.userManagement': 'User Management',
+    'nav.contentManagement': 'Content Management',
+    'nav.navigation': 'Navigation',
     
     // Auth
     'auth.title': 'DisasterPrep Learn',
@@ -101,6 +108,13 @@ const translations = {
     'nav.profile': 'प्रोफ़ाइल',
     'nav.students': 'मेरे छात्र',
     'nav.reports': 'प्रगति रिपोर्ट',
+    'nav.content': 'पाठ्य सामग्री',
+    'nav.assignments': 'असाइनमेंट',
+    'nav.settings': 'सेटिंग्स',
+    'nav.analytics': 'एनालिटिक्स',
+    'nav.userManagement': 'उपयोगकर्ता प्रबंधन',
+    'nav.contentManagement': 'सामग्री प्रबंधन',
+    'nav.navigation': 'नेविगेशन',
     
     // Auth
     'auth.title': 'डिजास्टर प्रेप लर्न',
@@ -180,6 +194,13 @@ const translations = {
     'nav.profile': 'ਪ੍ਰੋਫਾਈਲ',
     'nav.students': 'ਮੇਰੇ ਵਿਦਿਆਰਥੀ',
     'nav.reports': 'ਪ੍ਰਗਤੀ ਰਿਪੋਰਟਾਂ',
+    'nav.content': 'ਕੋਰਸ ਸਮੱਗਰੀ',
+    'nav.assignments': 'ਅਸਾਈਨਮੈਂਟਸ',
+    'nav.settings': 'ਸੈਟਿੰਗਾਂ',
+    'nav.analytics': 'ਐਨਾਲੇਟਿਕਸ',
+    'nav.userManagement': 'ਯੂਜ਼ਰ ਪ੍ਰਬੰਧਨ',
+    'nav.contentManagement': 'ਸਮੱਗਰੀ ਪ੍ਰਬੰਧਨ',
+    'nav.navigation': 'ਨੇਵੀਗੇਸ਼ਨ',
     
     // Auth
     'auth.title': 'ਡਿਜ਼ਾਸਟਰ ਪ੍ਰੈਪ ਲਰਨ',
@@ -225,6 +246,13 @@ const translations = {
     'nav.profile': 'प्रोफाइल',
     'nav.students': 'माझे विद्यार्थी',
     'nav.reports': 'प्रगती अहवाल',
+    'nav.content': 'कोर्स सामग्री',
+    'nav.assignments': 'असाइन्मेंट्स',
+    'nav.settings': 'सेटिंग्ज',
+    'nav.analytics': 'विश्लेषण',
+    'nav.userManagement': 'वापरकर्ता व्यवस्थापन',
+    'nav.contentManagement': 'सामग्री व्यवस्थापन',
+    'nav.navigation': 'नेव्हिगेशन',
     
     // Auth
     'auth.title': 'डिझास्टर प्रेप लर्न',

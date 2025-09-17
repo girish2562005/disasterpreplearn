@@ -21,6 +21,18 @@ import EmergencySkillsGrid from "@/components/EmergencySkillsGrid";
 import AchievementsShowcase from "@/components/AchievementsShowcase";
 import ThemeToggle from "@/components/ThemeToggle";
 import { LanguageProvider, LanguageSelector, useLanguage } from "@/components/LanguageProvider";
+import TeacherDashboard from "@/components/teacher/TeacherDashboard";
+import Students from "@/components/teacher/Students";
+import CourseContent from "@/components/teacher/CourseContent";
+import ProgressReports from "@/components/teacher/ProgressReports";
+import Assignments from "@/components/teacher/Assignments";
+import Settings from "@/components/teacher/Settings";
+import AdminDashboard from "@/components/admin/AdminDashboard";
+import AdminStudents from "@/components/admin/Students";
+import AdminCourseContent from "@/components/admin/CourseContent";
+import AdminProgressReports from "@/components/admin/ProgressReports";
+import AdminAssignments from "@/components/admin/Assignments";
+import AdminSettings from "@/components/admin/Settings";
 
 // Import images
 import earthquakeImage from '@assets/generated_images/Earthquake_safety_scenario_choices_d6ed01c5.png';
@@ -64,7 +76,7 @@ function DisasterPrepApp() {
     email: '',
     role: null
   });
-  const [currentView, setCurrentView] = useState<'hero' | 'auth' | 'dashboard' | 'modules' | 'quiz' | 'scenario' | 'emergency' | 'achievements'>('hero');
+  const [currentView, setCurrentView] = useState<'hero' | 'auth' | 'dashboard' | 'modules' | 'quiz' | 'scenario' | 'emergency' | 'achievements' | 'teacher-dashboard' | 'teacher-students' | 'teacher-content' | 'teacher-reports' | 'teacher-assignments' | 'teacher-settings' | 'admin-dashboard' | 'admin-students' | 'admin-content' | 'admin-reports' | 'admin-assignments' | 'admin-settings'>('hero');
 
   const handleLogin = (email: string, role: UserRole) => {
     setCurrentUser({ email, role });
@@ -125,11 +137,27 @@ function DisasterPrepApp() {
             role={currentUser.role}
             onNavigate={(path) => {
               console.log('Navigate to:', path);
-              if (path.includes('modules')) setCurrentView('modules');
-              else if (path.includes('emergency')) setCurrentView('emergency');
-              else if (path.includes('scenarios')) setCurrentView('scenario');
-              else if (path.includes('achievements')) setCurrentView('achievements');
-              else setCurrentView('dashboard');
+              if (path.startsWith('/teacher')) {
+                if (path.endsWith('students')) setCurrentView('teacher-students');
+                else if (path.endsWith('content')) setCurrentView('teacher-content');
+                else if (path.endsWith('reports')) setCurrentView('teacher-reports');
+                else if (path.endsWith('assignments')) setCurrentView('teacher-assignments');
+                else if (path.endsWith('settings')) setCurrentView('teacher-settings');
+                else setCurrentView('teacher-dashboard');
+              } else if (path.startsWith('/admin')) {
+                if (path.endsWith('users')) setCurrentView('admin-students');
+                else if (path.endsWith('content')) setCurrentView('admin-content');
+                else if (path.endsWith('analytics') || path.endsWith('reports')) setCurrentView('admin-reports');
+                else if (path.endsWith('assignments')) setCurrentView('admin-assignments');
+                else if (path.endsWith('settings')) setCurrentView('admin-settings');
+                else setCurrentView('admin-dashboard');
+              } else {
+                if (path.includes('modules')) setCurrentView('modules');
+                else if (path.includes('emergency')) setCurrentView('emergency');
+                else if (path.includes('scenarios')) setCurrentView('scenario');
+                else if (path.includes('achievements')) setCurrentView('achievements');
+                else setCurrentView('dashboard');
+              }
             }}
           />
           <div className="flex flex-col flex-1">
@@ -159,6 +187,28 @@ function DisasterPrepApp() {
                   userEmail={currentUser.email}
                   onNavigate={setCurrentView}
                 />
+              )}
+
+              {currentUser.role === 'teacher' && (
+                <>
+                  {currentView === 'teacher-dashboard' && <TeacherDashboard />}
+                  {currentView === 'teacher-students' && <Students />}
+                  {currentView === 'teacher-content' && <CourseContent />}
+                  {currentView === 'teacher-reports' && <ProgressReports />}
+                  {currentView === 'teacher-assignments' && <Assignments />}
+                  {currentView === 'teacher-settings' && <Settings />}
+                </>
+              )}
+
+              {currentUser.role === 'admin' && (
+                <>
+                  {currentView === 'admin-dashboard' && <AdminDashboard />}
+                  {currentView === 'admin-students' && <AdminStudents />}
+                  {currentView === 'admin-content' && <AdminCourseContent />}
+                  {currentView === 'admin-reports' && <AdminProgressReports />}
+                  {currentView === 'admin-assignments' && <AdminAssignments />}
+                  {currentView === 'admin-settings' && <AdminSettings />}
+                </>
               )}
 
               {currentView === 'modules' && (

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLanguage } from '@/components/LanguageProvider';
 import { 
   Sidebar, 
   SidebarContent, 
@@ -40,6 +41,7 @@ interface NavigationSidebarProps {
 
 export default function NavigationSidebar({ role, currentPath = '/', onNavigate }: NavigationSidebarProps) {
   const [activePath, setActivePath] = useState(currentPath);
+  const { t } = useLanguage();
 
   const handleNavigation = (path: string) => {
     setActivePath(path);
@@ -51,29 +53,29 @@ export default function NavigationSidebar({ role, currentPath = '/', onNavigate 
     switch (role) {
       case 'admin':
         return [
-          { title: 'Dashboard', url: '/admin', icon: Home },
-          { title: 'User Management', url: '/admin/users', icon: Users, badge: '247' },
-          { title: 'Content Management', url: '/admin/content', icon: BookOpen },
-          { title: 'Analytics', url: '/admin/analytics', icon: BarChart3 },
-          { title: 'System Settings', url: '/admin/settings', icon: Settings }
+          { title: t('nav.dashboard'), url: '/admin', icon: Home },
+          { title: t('nav.userManagement'), url: '/admin/users', icon: Users, badge: '247' },
+          { title: t('nav.contentManagement'), url: '/admin/content', icon: BookOpen },
+          { title: t('nav.analytics'), url: '/admin/analytics', icon: BarChart3 },
+          { title: t('nav.settings'), url: '/admin/settings', icon: Settings }
         ];
       case 'teacher':
         return [
-          { title: 'Dashboard', url: '/teacher', icon: Home },
-          { title: 'My Students', url: '/teacher/students', icon: Users, badge: '28' },
-          { title: 'Course Content', url: '/teacher/content', icon: BookOpen },
-          { title: 'Progress Reports', url: '/teacher/reports', icon: BarChart3 },
-          { title: 'Assignments', url: '/teacher/assignments', icon: FileText, badge: '3' },
-          { title: 'Settings', url: '/teacher/settings', icon: Settings }
+          { title: t('nav.dashboard'), url: '/teacher', icon: Home },
+          { title: t('nav.students'), url: '/teacher/students', icon: Users, badge: '28' },
+          { title: t('nav.content'), url: '/teacher/content', icon: BookOpen },
+          { title: t('nav.reports'), url: '/teacher/reports', icon: BarChart3 },
+          { title: t('nav.assignments'), url: '/teacher/assignments', icon: FileText, badge: '3' },
+          { title: t('nav.settings'), url: '/teacher/settings', icon: Settings }
         ];
       case 'student':
         return [
-          { title: 'Dashboard', url: '/student', icon: Home },
-          { title: 'Learning Modules', url: '/student/modules', icon: BookOpen, badge: '2 new' },
-          { title: 'Emergency Skills', url: '/student/emergency', icon: Heart },
-          { title: 'Scenarios', url: '/student/scenarios', icon: Target },
-          { title: 'Achievements', url: '/student/achievements', icon: Trophy },
-          { title: 'Profile', url: '/student/profile', icon: Settings }
+          { title: t('nav.dashboard'), url: '/student', icon: Home },
+          { title: t('nav.modules'), url: '/student/modules', icon: BookOpen, badge: '2 new' },
+          { title: t('nav.emergency'), url: '/student/emergency', icon: Heart },
+          { title: t('nav.scenarios'), url: '/student/scenarios', icon: Target },
+          { title: t('nav.achievements'), url: '/student/achievements', icon: Trophy },
+          { title: t('nav.profile'), url: '/student/profile', icon: Settings }
         ];
       default:
         return [];
@@ -120,7 +122,7 @@ export default function NavigationSidebar({ role, currentPath = '/', onNavigate 
 
         {/* Navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('nav.navigation')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navigationItems.map((item) => {
