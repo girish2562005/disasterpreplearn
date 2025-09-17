@@ -13,11 +13,14 @@ import NotFound from "@/pages/not-found";
 import Hero from "@/components/Hero";
 import AuthCard from "@/components/AuthCard";
 import NavigationSidebar from "@/components/NavigationSidebar";
-import DashboardStats from "@/components/DashboardStats";
+import EnhancedDashboard from "@/components/EnhancedDashboard";
 import ModuleCard from "@/components/ModuleCard";
 import QuizComponent from "@/components/QuizComponent";
 import ScenarioChoice from "@/components/ScenarioChoice";
+import EmergencySkillsGrid from "@/components/EmergencySkillsGrid";
+import AchievementsShowcase from "@/components/AchievementsShowcase";
 import ThemeToggle from "@/components/ThemeToggle";
+import { LanguageProvider, LanguageSelector, useLanguage } from "@/components/LanguageProvider";
 
 // Import images
 import earthquakeImage from '@assets/generated_images/Earthquake_safety_scenario_choices_d6ed01c5.png';
@@ -56,11 +59,12 @@ const mockScenarioOptions = [
 type UserRole = 'admin' | 'teacher' | 'student' | null;
 
 function DisasterPrepApp() {
+  const { t } = useLanguage();
   const [currentUser, setCurrentUser] = useState<{ email: string; role: UserRole }>({
     email: '',
     role: null
   });
-  const [currentView, setCurrentView] = useState<'hero' | 'auth' | 'dashboard' | 'modules' | 'quiz' | 'scenario'>('hero');
+  const [currentView, setCurrentView] = useState<'hero' | 'auth' | 'dashboard' | 'modules' | 'quiz' | 'scenario' | 'emergency' | 'achievements'>('hero');
 
   const handleLogin = (email: string, role: UserRole) => {
     setCurrentUser({ email, role });
@@ -82,7 +86,8 @@ function DisasterPrepApp() {
   if (currentView === 'hero') {
     return (
       <div>
-        <div className="absolute top-4 right-4 z-50">
+        <div className="absolute top-4 right-4 z-50 flex items-center gap-2">
+          <LanguageSelector />
           <ThemeToggle />
         </div>
         <Hero 
@@ -97,12 +102,13 @@ function DisasterPrepApp() {
   if (currentView === 'auth') {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="absolute top-4 right-4">
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+          <LanguageSelector />
           <ThemeToggle />
         </div>
         <div className="absolute top-4 left-4">
           <Button variant="ghost" onClick={() => setCurrentView('hero')}>
-            ← Back to Home
+            ← {t('common.backToHome')}
           </Button>
         </div>
         <AuthCard onLogin={handleLogin} />
@@ -120,8 +126,9 @@ function DisasterPrepApp() {
             onNavigate={(path) => {
               console.log('Navigate to:', path);
               if (path.includes('modules')) setCurrentView('modules');
-              else if (path.includes('quiz')) setCurrentView('quiz');
+              else if (path.includes('emergency')) setCurrentView('emergency');
               else if (path.includes('scenarios')) setCurrentView('scenario');
+              else if (path.includes('achievements')) setCurrentView('achievements');
               else setCurrentView('dashboard');
             }}
           />
@@ -130,57 +137,28 @@ function DisasterPrepApp() {
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
                 <div>
-                  <h1 className="text-lg font-semibold">DisasterPrep Learn</h1>
+                  <h1 className="text-lg font-semibold">{t('auth.title')}</h1>
                   <div className="flex items-center gap-2">
-                    <Badge variant="outline">{currentUser.role}</Badge>
+                    <Badge variant="outline">{t(`auth.${currentUser.role}`)}</Badge>
                     <span className="text-sm text-muted-foreground">{currentUser.email}</span>
                   </div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
+                <LanguageSelector />
                 <ThemeToggle />
                 <Button variant="outline" onClick={handleLogout}>
-                  Logout
+                  {t('common.logout')}
                 </Button>
               </div>
             </header>
             <main className="flex-1 overflow-auto p-6">
               {currentView === 'dashboard' && (
-                <div className="space-y-6">
-                  <div>
-                    <h2 className="text-2xl font-bold mb-2">Dashboard</h2>
-                    <p className="text-muted-foreground">Welcome back to your emergency preparedness training.</p>
-                  </div>
-                  <DashboardStats
-                    role={currentUser.role}
-                    stats={{
-                      totalUsers: 1247,
-                      activeStudents: currentUser.role === 'student' ? undefined : 28,
-                      completedModules: currentUser.role === 'student' ? 7 : 156,
-                      totalModules: currentUser.role === 'student' ? 10 : undefined,
-                      averageScore: 84,
-                      passRate: 89
-                    }}
-                    studentProgress={currentUser.role !== 'student' ? [
-                      {
-                        name: 'Emily Johnson',
-                        email: 'emily.j@school.edu',
-                        completedModules: 8,
-                        totalModules: 10,
-                        averageScore: 92,
-                        lastActive: '2 hours ago'
-                      },
-                      {
-                        name: 'Michael Chen',
-                        email: 'm.chen@school.edu',
-                        completedModules: 6,
-                        totalModules: 10,
-                        averageScore: 78,
-                        lastActive: '1 day ago'
-                      }
-                    ] : undefined}
-                  />
-                </div>
+                <EnhancedDashboard
+                  role={currentUser.role}
+                  userEmail={currentUser.email}
+                  onNavigate={setCurrentView}
+                />
               )}
 
               {currentView === 'modules' && (
@@ -246,7 +224,7 @@ function DisasterPrepApp() {
               {currentView === 'scenario' && (
                 <div className="space-y-6">
                   <Button variant="outline" onClick={() => setCurrentView('modules')}>
-                    ← Back to Modules
+                    ← {t('common.backToHome')}
                   </Button>
                   <ScenarioChoice
                     title="Earthquake Response Scenario"
@@ -256,6 +234,29 @@ function DisasterPrepApp() {
                     options={mockScenarioOptions}
                     onComplete={(option, isCorrect) => console.log('Scenario completed:', { option, isCorrect })}
                   />
+                </div>
+              )}
+
+              {currentView === 'emergency' && (
+                <div className="space-y-6">
+                  <Button variant="outline" onClick={() => setCurrentView('dashboard')}>
+                    ← {t('nav.dashboard')}
+                  </Button>
+                  <EmergencySkillsGrid 
+                    onSkillStart={(skillId) => {
+                      console.log('Starting emergency skill:', skillId);
+                      setCurrentView('quiz');
+                    }}
+                  />
+                </div>
+              )}
+
+              {currentView === 'achievements' && (
+                <div className="space-y-6">
+                  <Button variant="outline" onClick={() => setCurrentView('dashboard')}>
+                    ← {t('nav.dashboard')}
+                  </Button>
+                  <AchievementsShowcase />
                 </div>
               )}
             </main>
@@ -281,8 +282,10 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Router />
+        <LanguageProvider>
+          <Toaster />
+          <Router />
+        </LanguageProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
